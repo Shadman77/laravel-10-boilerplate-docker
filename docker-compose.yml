@@ -50,6 +50,7 @@ services:
     networks:
       - private-network
       - external-network
+    command: sh -c "composer update && chmod -R 777 . && apache2-foreground"
 
 #Docker Networks
 networks:
