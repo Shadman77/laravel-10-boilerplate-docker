@@ -1,23 +1,70 @@
 version: "3.9"
 services:
-  obe-site:
+
+  #MySQL Service
+  db:
+    image: mysql:5.7.16
+    container_name: app-db
+    restart: unless-stopped
+    tty: true
+    # ports:
+    #   - "3306:3306"
+    environment:
+      MYSQL_DATABASE: app-db1
+      MYSQL_ROOT_PASSWORD: rootPassword
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      TZ: Asia/Dhaka
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - private-network
+
+  # PHP My Admin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: php-myadmin
+    restart: unless-stopped
+    ports:
+      - "91:80"
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootPassword
+    networks:
+      - private-network
+      - external-network
+
+  site:
     build: .
+    container_name: web-app
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./app:/var/www/html
+    depends_on:
+      - db
     networks:
-      - app-network
+      - private-network
+      - external-network
 
 #Docker Networks
 networks:
-  app-network:
+  private-network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+        # - gateway: 172.18.10.1
+  external-network:
+    external:
+      name: app-external-network
 
 #Volumes
 volumes:
-  dbdata:
-    driver: local
+  mysql-data:
       
