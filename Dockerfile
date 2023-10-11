@@ -25,9 +25,6 @@ RUN docker-php-ext-enable pdo_mysql
 
 # Install Dependency and allow write
 WORKDIR /var/www/html
-RUN chmod -R 777 .
-RUN composer update
-RUN chmod -R 777 .
 
 # IP Routing Issue
 RUN service apache2 stop

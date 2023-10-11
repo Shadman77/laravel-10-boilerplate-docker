@@ -5,4 +5,4 @@
 
 # Docker
 
-* docker network create app-external-network
+* docker exec -it <container_id> bash

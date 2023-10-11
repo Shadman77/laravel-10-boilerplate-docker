@@ -60,10 +60,7 @@ networks:
       driver: default
       config:
         - subnet: 172.18.0.0/16
-        # - gateway: 172.18.10.1
   external-network:
-    external:
-      name: app-external-network
 
 #Volumes
 volumes:
