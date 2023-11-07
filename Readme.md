@@ -6,3 +6,4 @@
 # Docker
 
 * docker exec -it <container_id> bash
+* docker network prune

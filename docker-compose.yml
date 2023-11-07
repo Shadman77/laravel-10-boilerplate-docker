@@ -4,7 +4,7 @@ services:
   #MySQL Service
   db:
     image: mysql:5.7.16
-    container_name: app-db
+    container_name: laravel-10-boilerplate-db
     restart: unless-stopped
     tty: true
     # ports:
@@ -22,11 +22,11 @@ services:
 
   # PHP My Admin
   phpmyadmin:
+    container_name: laravel-10-boilerplate-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    container_name: php-myadmin
     restart: unless-stopped
     ports:
-      - "91:80"
+      - "92:80"
     depends_on:
       - db
     environment:
@@ -38,7 +38,7 @@ services:
 
   site:
     build: .
-    container_name: web-app
+    container_name: laravel-10-boilerplate-web-app
     restart: unless-stopped
     ports:
       - "80:80"
@@ -55,12 +55,14 @@ services:
 #Docker Networks
 networks:
   private-network:
+    name: laravel-10-boilerplate-ext
     driver: bridge
     ipam:
       driver: default
       config:
         - subnet: 172.18.0.0/16
   external-network:
+    name: laravel-10-boilerplate-int
 
 #Volumes
 volumes:
